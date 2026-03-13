@@ -13,25 +13,33 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tomcat.version>9.0.82</tomcat.version>
+        <spring.version>5.3.30</spring.version>
     </properties>
 
     <dependencies>
-        <!-- 톰캣 핵심 라이브러리 -->
+        <!-- Tomcat Embed Core: 서블릿 컨테이너 -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
             <version>${tomcat.version}</version>
         </dependency>
-        <!-- JSP 처리를 위한 톰캣 Jasper 엔진 -->
+
+        <!-- Tomcat Embed Jasper: JSP 엔진 (JSP 사용 시 필수) -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>${tomcat.version}</version>
         </dependency>
+
+        <!-- Spring MVC: 웹 프레임워크 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <!-- 기존 소스 경로 유지 -->
         <sourceDirectory>src</sourceDirectory>
     </build>
 </project>
