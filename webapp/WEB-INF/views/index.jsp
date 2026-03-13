@@ -24,5 +24,17 @@
     <h3>Request Info:</h3>
     <p>Context Path: <%= request.getContextPath() %></p>
     <p>Request URI: <%= request.getRequestURI() %></p>
+
+    <hr>
+
+    <!-- Page 1으로 이동 -->
+    <a href="${pageContext.request.contextPath}/page1">
+        <button>Go to Page 1</button>
+    </a>
+
+    <!-- Page 2으로 이동 -->
+    <a href="${pageContext.request.contextPath}/page2">
+        <button>Go to Page 2</button>
+    </a>
 </body>
 </html>

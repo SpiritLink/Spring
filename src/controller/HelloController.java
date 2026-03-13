@@ -21,10 +21,15 @@ public class HelloController {
         return "index";
     }
 
-    @GetMapping("/hello")
-    public String hello(Model model) {
+    @GetMapping("/page1")
+    public String page1() {
+        return "page1";
+    }
+
+    @GetMapping("/page2")
+    public String page2(Model model) {
         String message = helloService.getGreeting();
         model.addAttribute("message", message);
-        return "hello";
+        return "page2";
     }
 }
