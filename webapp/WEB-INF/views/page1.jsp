@@ -4,8 +4,12 @@
     <title>Page 1</title>
 </head>
 <body>
-    <h1>Welcome to Page 1</h1>
-    <p>This is a new page created by Spring MVC.</p>
+    <h1>Page 1 Data from Service</h1>
+
+    <ul>
+        <li><strong>Title:</strong> ${page1Data.title}</li>
+        <li><strong>Num:</strong> ${page1Data.num}</li>
+    </ul>
 
     <hr>
 

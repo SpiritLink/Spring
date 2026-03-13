@@ -4,16 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import service.HelloService;
+import service.IndexService;
+import vo.Page1;
 
 @Controller
-public class HelloController {
+public class IndexController {
 
-    private final HelloService helloService;
+    private final IndexService indexService;
 
     @Autowired
-    public HelloController(HelloService helloService) {
-        this.helloService = helloService;
+    public IndexController(IndexService indexService) {
+        this.indexService = indexService;
     }
 
     @GetMapping("/")
@@ -22,13 +23,16 @@ public class HelloController {
     }
 
     @GetMapping("/page1")
-    public String page1() {
+    public String page1(Model model) {
+        Page1 data = indexService.getPage1Info();
+        data.setNum(200);
+        model.addAttribute("page1Data", data);
         return "page1";
     }
 
     @GetMapping("/page2")
     public String page2(Model model) {
-        String message = helloService.getGreeting();
+        String message = indexService.getGreeting();
         model.addAttribute("message", message);
         return "page2";
     }
