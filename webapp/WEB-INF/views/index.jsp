@@ -104,9 +104,9 @@
         </ul>
 
         <div class="btn-group">
-            <a href="${pageContext.request.contextPath}/page1" class="btn btn-primary">Page 1 서비스 이용</a>
-            <a href="${pageContext.request.contextPath}/page2" class="btn btn-secondary">Page 2 서비스 이용</a>
             <a href="${pageContext.request.contextPath}/environment_setup" class="btn btn-tertiary">환경구성</a>
+            <a href="${pageContext.request.contextPath}/page1" class="btn btn-primary">Page 1</a>
+            <a href="${pageContext.request.contextPath}/page2" class="btn btn-secondary">Page 2</a>
         </div>
     </div>
 </body>
