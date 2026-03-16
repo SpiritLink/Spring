@@ -7,11 +7,14 @@
     <title>정부서비스 - 환경구성</title>
     <style>
         :root {
-            var(--krds-primary): #004ea2;
-            var(--krds-secondary): #f3f5f8;
-            var(--krds-text): #1a1a1a;
-            var(--krds-border): #dcdcdc;
-            var(--krds-focus): #0052cc;
+            --krds-primary: #004ea2;
+            --krds-secondary: #f3f5f8;
+            --krds-text: #1a1a1a;
+            --krds-border: #dcdcdc;
+            --krds-focus: #0052cc;
+            --krds-error-bg: #fff4f4;
+            --krds-error-border: #ffc2c2;
+            --krds-error-text: #d90000;
         }
         body {
             font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif;
@@ -49,6 +52,11 @@
             margin-bottom: 12px;
             color: #004ea2;
         }
+        h4 {
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
         .content-box {
             background-color: #f3f5f8;
             padding: 24px;
@@ -56,7 +64,15 @@
             margin-bottom: 24px;
             border: 1px solid #dcdcdc;
         }
-        ul {
+        .error-box {
+            background-color: var(--krds-error-bg);
+            border: 1px solid var(--krds-error-border);
+            color: var(--krds-error-text);
+            padding: 24px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+        ul, ol {
             margin-top: 0;
             padding-left: 20px;
         }
@@ -122,9 +138,39 @@
             </ul>
         </div>
 
-        <h3>초기 세팅 쿼리</h3>
-        <p>본 샘플 서비스의 원활한 동작을 위해 DB 접속 툴(예: IntelliJ Database, SQL Developer 등)을 이용하여 아래의 쿼리를 순차적으로 실행하여 주십시오.</p>
-        <p>해당 쿼리는 시스템 구동에 필요한 테이블스페이스 및 계정을 생성하고 권한을 부여하며, 더미 테이블과 기초 데이터를 삽입합니다.</p>
+        <h3>DB 컨테이너 실행 안내</h3>
+        <p>초기 DB 세팅을 진행하기 전, 터미널(명령 프롬프트) 환경에서 다음 명령어를 순차적으로 실행하여 데이터베이스 컨테이너를 구동해 주시기 바랍니다.</p>
+
+        <h4>1. Colima 실행 (Mac 사용자 등)</h4>
+<pre><code>colima start</code></pre>
+
+        <h4>2. Oracle 컨테이너 실행</h4>
+<pre><code>docker run -d --name oracle26ai \
+  -p 1521:1521 \
+  -e ORACLE_PWD=1q2w3e4r \
+  container-registry.oracle.com/database/free:latest-lite</code></pre>
+
+        <h4>3. (선택) 이미 실행 중이라는 에러 발생 시 재실행</h4>
+        <p>기존에 컨테이너가 생성되어 충돌이 발생하는 경우 아래 명령어를 통해 기존 컨테이너를 제거하고 재실행합니다.</p>
+<pre><code># 1. 기존 컨테이너 중지 (실행 중인 경우)
+docker stop oracle26ai
+
+# 2. 기존 컨테이너 삭제
+docker rm oracle26ai
+
+# 3. 다시 실행
+docker run -d --name oracle26ai \
+  -p 1521:1521 \
+  -e ORACLE_PWD=1q2w3e4r \
+  container-registry.oracle.com/database/free:latest-lite</code></pre>
+
+        <h4>4. SYSDBA 접속 및 DDL 실행</h4>
+        <p>위 과정을 통해 컨테이너가 정상적으로 실행되면, 사용하시는 DB 클라이언트를 통해 SYSDBA 권한으로 접속하신 후 아래의 초기 세팅 쿼리를 실행해 주십시오.</p>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcdc;">
+
+        <h3>초기 세팅 쿼리 (DDL)</h3>
+        <p>DB 접속 툴을 이용하여 아래의 쿼리를 순차적으로 실행하여 주십시오.</p>
 
 <pre><code>-- 1. 테이블 스페이스 생성 (데이터 파일 경로와 크기는 환경에 맞게 조정할 수 있습니다)
 CREATE TABLESPACE DUMMY_TS
@@ -152,6 +198,23 @@ COMMIT;
 
 -- 6. 데이터 생성 확인
 SELECT * FROM DUMMY.DUMMY_TABLE_01;</code></pre>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcdc;">
+
+        <h3>자주 발생하는 오류 및 해결 방법</h3>
+        <div class="error-box">
+            <h4>오류: `Failed to obtain JDBC Connection; ... SQLException: 로케일을 인식할 수 없습니다.`</h4>
+            <p><strong>원인:</strong> Oracle JDBC 드라이버가 애플리케이션(JVM)의 기본 로케일(예: `ko_KR`)을 인식하지 못하여 발생하는 문제입니다.</p>
+            <p><strong>해결 방법:</strong> IntelliJ IDEA에서 애플리케이션을 실행할 때 JVM의 로케일을 강제로 미국(US)으로 설정하여 이 문제를 우회할 수 있습니다.</p>
+            <ol>
+                <li>IntelliJ 상단 메뉴에서 <strong>'Run' &gt; 'Edit Configurations...'</strong>를 선택합니다.</li>
+                <li>현재 실행 중인 애플리케이션 설정(예: 'Main')을 선택합니다.</li>
+                <li><strong>'Modify options'</strong>를 클릭하고 <strong>'Add VM options'</strong>를 선택합니다.</li>
+                <li>나타나는 'VM options' 입력란에 아래 내용을 추가합니다.</li>
+            </ol>
+<pre><code>-Duser.language=en -Duser.region=US</code></pre>
+            <p>설정 추가 후, 애플리케이션을 재시작하면 정상적으로 DB에 연결됩니다.</p>
+        </div>
 
         <div class="btn-group">
             <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">메인으로 돌아가기</a>
