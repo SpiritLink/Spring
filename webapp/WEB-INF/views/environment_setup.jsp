@@ -16,6 +16,9 @@
             --krds-error-border: #ffc2c2;
             --krds-error-text: #d90000;
         }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif;
             margin: 0;
@@ -63,6 +66,38 @@
             border-radius: 4px;
             margin-bottom: 24px;
             border: 1px solid #dcdcdc;
+        }
+        /* 목차 박스 스타일 */
+        .toc-box {
+            background-color: #ffffff;
+            border: 1px solid var(--krds-border);
+            border-radius: 4px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+        }
+        .toc-box h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: var(--krds-text);
+        }
+        .toc-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        .toc-list li {
+            margin-bottom: 8px;
+        }
+        .toc-list a {
+            text-decoration: none;
+            color: var(--krds-primary);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .toc-list a:hover {
+            text-decoration: underline;
+            color: var(--krds-focus);
         }
         .error-box {
             background-color: var(--krds-error-bg);
@@ -138,7 +173,18 @@
             </ul>
         </div>
 
-        <h3>DB 컨테이너 실행 안내</h3>
+        <!-- 목차 섹션 시작 -->
+        <div class="toc-box">
+            <h3>목차</h3>
+            <ul class="toc-list">
+                <li><a href="#section-container">1. DB 컨테이너 실행</a></li>
+                <li><a href="#section-ddl">2. DDL 실행</a></li>
+                <li><a href="#section-error">3. 자주 발생하는 오류 및 해결방법</a></li>
+            </ul>
+        </div>
+        <!-- 목차 섹션 끝 -->
+
+        <h3 id="section-container">DB 컨테이너 실행 안내</h3>
         <p>초기 DB 세팅을 진행하기 전, 터미널(명령 프롬프트) 환경에서 다음 명령어를 순차적으로 실행하여 데이터베이스 컨테이너를 구동해 주시기 바랍니다.</p>
 
         <h4>1. Colima 실행 (Mac 사용자 등)</h4>
@@ -169,7 +215,7 @@ docker run -d --name oracle26ai \
 
         <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcdc;">
 
-        <h3>초기 세팅 쿼리 (DDL)</h3>
+        <h3 id="section-ddl">초기 세팅 쿼리 (DDL)</h3>
         <p>DB 접속 툴을 이용하여 아래의 쿼리를 순차적으로 실행하여 주십시오.</p>
 
 <pre><code>-- 1. 테이블 스페이스 생성 (데이터 파일 경로와 크기는 환경에 맞게 조정할 수 있습니다)
@@ -201,7 +247,7 @@ SELECT * FROM DUMMY.DUMMY_TABLE_01;</code></pre>
 
         <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcdc;">
 
-        <h3>자주 발생하는 오류 및 해결 방법</h3>
+        <h3 id="section-error">자주 발생하는 오류 및 해결 방법</h3>
         <div class="error-box">
             <h4>오류: `Failed to obtain JDBC Connection; ... SQLException: 로케일을 인식할 수 없습니다.`</h4>
             <p><strong>원인:</strong> Oracle JDBC 드라이버가 애플리케이션(JVM)의 기본 로케일(예: `ko_KR`)을 인식하지 못하여 발생하는 문제입니다.</p>
