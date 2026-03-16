@@ -28,4 +28,9 @@ public class IndexController {
         model.addAttribute("message", message);
         return "page2";
     }
+
+    @GetMapping("/environment_setup")
+    public String environmentSetup() {
+        return "environment_setup";
+    }
 }

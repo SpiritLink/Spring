@@ -14,6 +14,7 @@
             --krds-text: #1a1a1a;
             --krds-border: #dcdcdc;
             --krds-focus: #0052cc;
+            --krds-tertiary: #424242;
         }
         body {
             font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif;
@@ -61,7 +62,7 @@
         li { margin-bottom: 8px; }
 
         /* 버튼 스타일 */
-        .btn-group { margin-top: 40px; display: flex; gap: 12px; justify-content: center; }
+        .btn-group { margin-top: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
         .btn {
             display: inline-block;
             padding: 14px 28px;
@@ -79,6 +80,8 @@
         .btn-primary:hover { background-color: #003a7a; }
         .btn-secondary { background-color: white; color: var(--krds-primary); border-color: var(--krds-primary); }
         .btn-secondary:hover { background-color: #f0f4f9; }
+        .btn-tertiary { background-color: var(--krds-tertiary); color: white; }
+        .btn-tertiary:hover { background-color: #2b2b2b; }
     </style>
 </head>
 <body>
@@ -103,6 +106,7 @@
         <div class="btn-group">
             <a href="${pageContext.request.contextPath}/page1" class="btn btn-primary">Page 1 서비스 이용</a>
             <a href="${pageContext.request.contextPath}/page2" class="btn btn-secondary">Page 2 서비스 이용</a>
+            <a href="${pageContext.request.contextPath}/environment_setup" class="btn btn-tertiary">환경구성</a>
         </div>
     </div>
 </body>
