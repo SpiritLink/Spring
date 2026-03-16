@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -57,8 +58,26 @@
         }
         .data-list strong {
             display: inline-block;
-            width: 80px;
+            width: 120px;
             color: #004ea2;
+        }
+
+        /* Status box styles */
+        .status-box {
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            font-weight: bold;
+        }
+        .status-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .status-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
         }
 
         /* 버튼 스타일 */
@@ -87,13 +106,26 @@
         <h2>대한민국 디지털 정부서비스 샘플</h2>
     </header>
     <div class="container">
-        <h1>Page 1 서비스 결과</h1>
+        <h1>Page 1 데이터베이스 상태 확인</h1>
 
-        <p>요청하신 데이터의 조회 결과입니다. 내용을 확인하여 주십시오.</p>
+        <p>시스템 구성 요소의 연결 상태를 확인합니다.</p>
+
+        <c:choose>
+            <c:when test="${isConnected}">
+                <div class="status-box status-success">
+                    ✓ 정상: ${dbStatusMessage}
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="status-box status-error">
+                    ⚠ 주의: ${dbStatusMessage}
+                </div>
+            </c:otherwise>
+        </c:choose>
 
         <ul class="data-list">
-            <li><strong>항목명:</strong> ${page1Data.title}</li>
-            <li><strong>고유번호:</strong> ${page1Data.num}</li>
+            <li><strong>항목명:</strong> ${page1Data.title != null ? page1Data.title : '데이터 없음'}</li>
+            <li><strong>고유번호:</strong> ${page1Data.num != null ? page1Data.num : '데이터 없음'}</li>
         </ul>
 
         <div class="btn-group">

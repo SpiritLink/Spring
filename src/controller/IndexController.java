@@ -22,14 +22,6 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/page1")
-    public String page1(Model model) {
-        Page1 data = indexService.getPage1Info();
-        data.setNum(200);
-        model.addAttribute("page1Data", data);
-        return "page1";
-    }
-
     @GetMapping("/page2")
     public String page2(Model model) {
         String message = indexService.getGreeting();

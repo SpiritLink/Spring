@@ -4,9 +4,6 @@ public class Page1 {
     private String title;
     private int num;
 
-    public Page1() {
-    }
-
     public Page1(String title, int num) {
         this.title = title;
         this.num = num;
