@@ -44,23 +44,6 @@
             margin-top: 0;
             margin-bottom: 24px;
         }
-        .data-list {
-            background-color: #f3f5f8;
-            padding: 24px;
-            border-radius: 4px;
-            margin-bottom: 24px;
-            border: 1px solid #dcdcdc;
-            list-style: none;
-        }
-        .data-list li {
-            margin-bottom: 12px;
-            font-size: 18px;
-        }
-        .data-list strong {
-            display: inline-block;
-            width: 120px;
-            color: #004ea2;
-        }
 
         /* Status box styles */
         .status-box {
@@ -80,18 +63,49 @@
             border: 1px solid #ffcdd2;
         }
 
+        /* 테이블 스타일 (KRDS 가이드라인 유사 적용) */
+        .data-table-container {
+            margin-top: 24px;
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-top: 2px solid #1a1a1a;
+            border-bottom: 1px solid #dcdcdc;
+        }
+        .data-table th, .data-table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #dcdcdc;
+        }
+        .data-table th {
+            background-color: #f3f5f8;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .data-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+        .empty-row {
+            text-align: center;
+            padding: 24px !important;
+            color: #666;
+        }
+
         /* 버튼 스타일 */
-        .btn-group { margin-top: 40px; display: flex; gap: 12px; justify-content: flex-start; }
+        .btn-group { margin-top: 40px; display: flex; gap: 12px; justify-content: space-between; align-items: center; }
+        .btn-actions { display: flex; gap: 12px; }
         .btn {
             display: inline-block;
-            padding: 14px 28px;
+            padding: 12px 24px;
             text-decoration: none;
             border-radius: 4px;
             font-weight: 700;
             border: 1px solid transparent;
             cursor: pointer;
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.2s ease-in-out;
         }
         .btn:focus, .btn:hover { outline: 2px solid #0052cc; outline-offset: 2px; }
@@ -106,9 +120,9 @@
         <h2>대한민국 디지털 정부서비스 샘플</h2>
     </header>
     <div class="container">
-        <h1>Page 1 데이터베이스 상태 확인</h1>
+        <h1>Page 1 데이터베이스 조회</h1>
 
-        <p>시스템 구성 요소의 연결 상태를 확인합니다.</p>
+        <p>시스템 구성 요소의 연결 상태를 확인하고, 데이터를 조회합니다.</p>
 
         <c:choose>
             <c:when test="${isConnected}">
@@ -123,13 +137,58 @@
             </c:otherwise>
         </c:choose>
 
-        <ul class="data-list">
-            <li><strong>항목명:</strong> ${page1Data.title != null ? page1Data.title : '데이터 없음'}</li>
-            <li><strong>고유번호:</strong> ${page1Data.num != null ? page1Data.num : '데이터 없음'}</li>
-        </ul>
+        <div class="data-table-container">
+            <table class="data-table">
+                <colgroup>
+                    <col style="width: 30%;">
+                    <col style="width: 70%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th scope="col">고유번호 (KEY_ID)</th>
+                        <th scope="col">항목명 (KEY_VALUE)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:choose>
+                        <c:when test="${not empty page1DataList}">
+                            <c:forEach var="data" items="${page1DataList}">
+                                <tr>
+                                    <td>${data.NUM}</td>
+                                    <td>${data.TITLE}</td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="2" class="empty-row">
+                                    <c:choose>
+                                        <c:when test="${param.action == 'search'}">
+                                            조회된 데이터가 없습니다.
+                                        </c:when>
+                                        <c:otherwise>
+                                            '조회' 버튼을 클릭하여 데이터를 확인해주세요.
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+                </tbody>
+            </table>
+        </div>
 
         <div class="btn-group">
-            <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">메인으로 돌아가기</a>
+            <div class="btn-actions">
+                <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">메인으로</a>
+            </div>
+            <div class="btn-actions">
+                <!-- 조회 시 action 파라미터를 넘겨 컨트롤러에서 전체 목록을 불러오게 합니다 -->
+                <form action="${pageContext.request.contextPath}/page1" method="GET" style="margin:0;">
+                    <input type="hidden" name="action" value="search">
+                    <button type="submit" class="btn btn-primary">데이터 조회</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

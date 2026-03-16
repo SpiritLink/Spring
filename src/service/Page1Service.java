@@ -4,7 +4,9 @@ import mapper.Page1Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -43,5 +45,14 @@ public class Page1Service {
             result.put("title", null);
         }
         return result;
+    }
+
+    public List<Map<String, Object>> getAllDummyData() {
+        try {
+            return page1Mapper.getAllDummyData();
+        } catch (Exception e) {
+            System.err.println("전체 데이터 조회 실패 (MyBatis): " + e.getMessage());
+            return new ArrayList<>(); // 실패 시 빈 리스트 반환
+        }
     }
 }
